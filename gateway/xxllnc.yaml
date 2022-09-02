@@ -1,0 +1,153 @@
+App\Entity\Application:
+    application:
+        domains:
+            - d3567706-282c-4ed7-a6fd-2ddf1f504760.bus.koppel.app
+        name: main application
+        organization: /api/organizations/a1c8e0b6-2f78-480d-a9fb-9792142f4761
+​
+# Collections
+App\Entity\CollectionEntity:
+    zaakRegistratieComponentCollection:
+       autoLoad: true
+       loadTestData: true
+       locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakRegistratieComponentAPI/main/OAS.yaml
+       name: ZaakRegistratieComponent
+       sourceType: GitHub
+      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
+   zaakTypeCatalogusCollection:
+       autoLoad: true
+       loadTestData: true
+       locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakTypeCatalogusAPI/main/OAS.yaml
+       name: ZaakTypeCatalogus
+       sourceType: GitHub
+      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
+   klantenCollection:
+       autoLoad: true
+       loadTestData: true
+       locationOAS: https://raw.githubusercontent.com/CommonGateway/KlantenAPI/main/OAS.yaml
+       name: Klanten
+       sourceType: GitHub
+      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
+   contactmomentenCollection:
+       autoLoad: true
+       loadTestData: true
+       locationOAS: https://raw.githubusercontent.com/CommonGateway/ContactmomentenAPI/main/OAS.yaml
+       name: Contactmomenten
+       sourceType: GitHub
+      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
+​
+# Entities
+App\Entity\Entity:
+    # Notification Entity
+    notification:
+        name: notifications
+        route: "/api/notification"
+        description: Holds information about a notification
+        endpoint: "notifications"
+        
+# Attributes
+App\Entity\Attribute:
+    # Notification attributes
+    notification_data:
+        name: data
+        description: Json blob.
+        type: array
+        required: true
+        entity: "@notification"
+​
+# Endpoints
+App\Entity\Endpoint:
+    # Notification Endpoint
+    notificationEndpointPost:
+        name: Notification endpoint post
+        description: Endpoint for creating notifications
+        path: [ 'notifications' ]
+        pathRegex: "^(notifications)$"
+        method: POST
+        operationType: collection
+        
+# Handlers
+App\Entity\Handler:
+    notificationHandler:
+        name: Notification handler
+        methods: ["*"]
+        sequence: 0
+        conditions: "{}"
+        endpoints: ["@notificationEndpointPost"]
+        entity: "@notification"
+​
+# Gateways
+App\Entity\Gateway:
+    xxllncv2:
+        name: xxllncv2
+        location: https://d3567706-282c-4ed7-a6fd-2ddf1f504760.bus.koppel.app/zs/api/v2
+​
+# Actions
+App\Entity\Action:
+    SyncZakenCollectionAction:
+        name: SyncZakenCollectionAction
+        description: This is a synchronization action from the xxllnc v2 to the gateway zrc zaken. 
+        listens:
+            - 'commongateway.cronjob.trigger'
+        throws: []
+        conditions:
+            '==': [1, 1]
+        class: App\ActionHandler\SynchronizationCollectionHandler
+        priority: 0
+        async: false
+        configuration:
+            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @xxllncv2
+            location: /cm/case/search
+            apiSource:
+                location:
+                    objects: 'data'
+                    object: 'attributes'
+                    idField: 'id'
+                queryMethod: page
+                syncFromList: true
+                sourceLeading: true
+                useDataFromCollection: false
+                mappingIn: {}
+                mappingOut: {}
+                translationsIn: {}
+                translationsOut: {}
+                skeletonIn: {}
+    
+    SyncZaakWebhookAction:
+        name: SyncZaakWebhookAction
+        description: This is a synchronization action from the xxllnc v2 to a gateway zrc zaak with a webhook.
+        listens:
+            - 'commongateway.object.create'
+        throws: []
+        conditions:
+            '==':
+                - var: entity
+                - 97b05576-af9b-43df-bab7-dbf0f057258e # notificatie entity uuid
+        class: App\ActionHandler\SynchronizationWebhookHandler
+        priority: 0
+        async: false
+        configuration:
+            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @xxllncv2
+            location: /cm/case/get_case
+            queryParams:
+                syncSourceId: case_uuid
+            apiSource:
+                location:
+                    object: 'data'
+                    idField: 'data.id'
+                    dateChangedField: last_modified_date
+                results: 0
+                queryMethod: page
+                syncFromList: true
+                sourceLeading: true
+                mappingIn:
+                    bronorganisatie: attributes.number|string
+                    zaaktype: relationships.case_type.links.self
+                    verantwoordelijkeOrganisatie: attributes.number|string
+                    startdatum: attributes.start_date
+                mappingOut: {}
+                translationsIn: {}
+                translationsOut: {}
+                skeletonIn: {}
