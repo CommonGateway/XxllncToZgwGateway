@@ -84,6 +84,38 @@ App\Entity\Gateway:
 ​
 # Actions
 App\Entity\Action:
+    ZGWZaakAction:
+        name: ZGWZaakAction
+        description: This is a action to check if a case is in order with its case type. 
+        listens:
+            - 'commongateway.object.create'
+            - 'commongateway.object.update'
+        throws: []
+        conditions:
+            '==':
+                - var: entity
+                - 97b05576-af9b-43df-bab7-dbf0f057258e # zaak entity uuid
+        class: App\ActionHandler\ZgwZaakHandler
+        priority: 0
+        async: false
+        configuration:
+            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @xxllncv2
+            location: /cm/case/search
+            apiSource:
+                location:
+                    objects: 'data'
+                    object: 'attributes'
+                    idField: 'id'
+                queryMethod: page
+                syncFromList: true
+                sourceLeading: true
+                useDataFromCollection: false
+                mappingIn: {}
+                mappingOut: {}
+                translationsIn: {}
+                translationsOut: {}
+                skeletonIn: {}
     SyncZakenCollectionAction:
         name: SyncZakenCollectionAction
         description: This is a synchronization action from the xxllnc v2 to the gateway zrc zaken. 
