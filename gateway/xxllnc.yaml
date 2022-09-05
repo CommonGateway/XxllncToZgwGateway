@@ -1,55 +1,58 @@
-App\Entity\Application:
-    application:
-        domains:
-            - d3567706-282c-4ed7-a6fd-2ddf1f504760.bus.koppel.app
-        name: main application
-        organization: /api/organizations/a1c8e0b6-2f78-480d-a9fb-9792142f4761
-​
+
 # Collections
 App\Entity\CollectionEntity:
     zaakRegistratieComponentCollection:
-       autoLoad: true
-       loadTestData: true
-       locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakRegistratieComponentAPI/main/OAS.yaml
-       name: ZaakRegistratieComponent
-       sourceType: GitHub
-      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
-   zaakTypeCatalogusCollection:
-       autoLoad: true
-       loadTestData: true
-       locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakTypeCatalogusAPI/main/OAS.yaml
-       name: ZaakTypeCatalogus
-       sourceType: GitHub
-      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
-   klantenCollection:
-       autoLoad: true
-       loadTestData: true
-       locationOAS: https://raw.githubusercontent.com/CommonGateway/KlantenAPI/main/OAS.yaml
-       name: Klanten
-       sourceType: GitHub
-      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
-   contactmomentenCollection:
-       autoLoad: true
-       loadTestData: true
-       locationOAS: https://raw.githubusercontent.com/CommonGateway/ContactmomentenAPI/main/OAS.yaml
-       name: Contactmomenten
-       sourceType: GitHub
-      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
-   besluitenCollection:
-       autoLoad: true
-       loadTestData: true
-       locationOAS: https://raw.githubusercontent.com/CommonGateway/BesluitenAPI/main/OAS.yaml
-       name: Besluiten
-       sourceType: GitHub
-      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
-   documentenCollection:
-       autoLoad: true
-       loadTestData: true
-       locationOAS: https://raw.githubusercontent.com/CommonGateway/DocumentenAPI/main/OAS.yaml
-       name: Documenten
-       sourceType: GitHub
-      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
-​
+      autoLoad: true
+      loadTestData: true
+      locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakRegistratieComponentAPI/main/OAS.yaml
+      name: ZaakRegistratieComponent
+      sourceType: GitHub
+      testDataLocation: https://raw.githubusercontent.com/CommonGateway/ZaakRegistratieComponentAPI/main/data/zrc.json
+      prefix: zrc
+
+    zaakTypeCatalogusCollection:
+      autoLoad: true
+      loadTestData: false
+      locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakTypeCatalogusAPI/main/OAS.yaml
+      name: ZaakTypeCatalogus
+      sourceType: GitHub
+      testDataLocation: https://raw.githubusercontent.com/CommonGateway/ZaakTypeCatalogusAPI/main/data/ztc.json
+      prefix: ztc
+
+    klantenCollection:
+      autoLoad: true
+      loadTestData: true
+      locationOAS: https://raw.githubusercontent.com/CommonGateway/KlantenAPI/main/OAS.yaml
+      name: Klanten
+      sourceType: GitHub
+      prefix: klanten
+
+    contactmomentenCollection:
+      autoLoad: true
+      loadTestData: true
+      locationOAS: https://raw.githubusercontent.com/CommonGateway/ContactmomentenAPI/main/OAS.yaml
+      name: Contactmomenten
+      sourceType: GitHub
+      prefix: cmc
+
+    besluitenCollection:
+      autoLoad: true
+      loadTestData: true
+      locationOAS: https://raw.githubusercontent.com/CommonGateway/BesluitenAPI/main/OAS.yaml
+      name: Besluiten
+      sourceType: GitHub
+      testDataLocation: https://raw.githubusercontent.com/CommonGateway/BesluitenAPI/main/data/brc.yaml
+      prefix: brc
+
+    documentenCollection:
+      autoLoad: true
+      loadTestData: true
+      locationOAS: https://raw.githubusercontent.com/CommonGateway/DocumentenAPI/main/OAS.yaml
+      name: Documenten
+      sourceType: GitHub
+      testDataLocation: https://raw.githubusercontent.com/CommonGateway/DocumentenAPI/main/data/drc.yaml
+      prefix: drc
+
 # Entities
 App\Entity\Entity:
     # Notification Entity
@@ -68,7 +71,7 @@ App\Entity\Attribute:
         type: array
         required: true
         entity: "@notification"
-​
+
 # Endpoints
 App\Entity\Endpoint:
     # Notification Endpoint
@@ -89,13 +92,13 @@ App\Entity\Handler:
         conditions: "{}"
         endpoints: ["@notificationEndpointPost"]
         entity: "@notification"
-​
+
 # Gateways
 App\Entity\Gateway:
     xxllncv2:
         name: xxllncv2
         location: https://d3567706-282c-4ed7-a6fd-2ddf1f504760.bus.koppel.app/zs/api/v2
-​
+
 # Actions
 App\Entity\Action:
     ZGWZaakAction:
