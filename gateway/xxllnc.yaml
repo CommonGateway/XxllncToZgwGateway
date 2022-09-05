@@ -35,6 +35,20 @@ App\Entity\CollectionEntity:
        name: Contactmomenten
        sourceType: GitHub
       #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
+   besluitenCollection:
+       autoLoad: true
+       loadTestData: true
+       locationOAS: https://raw.githubusercontent.com/CommonGateway/BesluitenAPI/main/OAS.yaml
+       name: Besluiten
+       sourceType: GitHub
+      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
+   documentenCollection:
+       autoLoad: true
+       loadTestData: true
+       locationOAS: https://raw.githubusercontent.com/CommonGateway/DocumentenAPI/main/OAS.yaml
+       name: Documenten
+       sourceType: GitHub
+      #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
 ​
 # Entities
 App\Entity\Entity:
