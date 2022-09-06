@@ -18,6 +18,7 @@ App\Entity\CollectionEntity:
       sourceType: GitHub
       testDataLocation: https://raw.githubusercontent.com/CommonGateway/ZaakTypeCatalogusAPI/main/data/ztc.json
       prefix: ztc
+      source: "@zaaksysteemv1"
 
     klantenCollection:
       autoLoad: true
@@ -98,9 +99,47 @@ App\Entity\Gateway:
     xxllncv2:
         name: xxllncv2
         location: https://d3567706-282c-4ed7-a6fd-2ddf1f504760.bus.koppel.app/zs/api/v2
+        
+    zaaksysteemv1:
+        name: zaaksysteem
+        auth: apikey
+        apikey: XXX # DONT COMMIT
+        location: https://development.zaaksysteem.nl/api/v1
+        authorizationHeader: API-Key
+        headers:
+            Api-Interface-Id: XXXX # DONT COMMIT
 
 # Actions
 App\Entity\Action:
+    SyncZaakTypeAction:
+        name: SyncZaakTypeAction
+        description: This is a synchronization action from the xxllnc v2 to the gateway ztc zaken. 
+        listens:
+            - 'commongateway.cronjob.trigger'
+        throws: []
+        conditions:
+            '==': [1, 1]
+        class: App\ActionHandler\SynchronizationCollectionHandler
+        priority: 0
+        async: false
+        configuration:
+            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # ztc ZaakType entity id
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # zaaksysteemv1 gateway id
+            location: /casetype
+            apiSource:
+                location:
+                    objects: 'result.instance.rows'
+                    idField: 'reference'
+                queryMethod: page
+                syncFromList: true
+                sourceLeading: true
+                useDataFromCollection: false
+                mappingIn: 
+                    onderwerp: title
+                mappingOut: {}
+                translationsIn: {}
+                translationsOut: {}
+                skeletonIn: {}
     ZGWZaakAction:
         name: ZGWZaakAction
         description: This is a action to check if a case is in order with its case type. 
