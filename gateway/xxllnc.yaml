@@ -163,9 +163,6 @@ App\Entity\Action:
                     publicatieIndicatie: instance.properties.publication|bool
                     verantwoordingsrelatie: instance.properties.supervisor_relation|array
                     omschrijving: instance.title
-                    doel: instance.properties.goal
-                    aanleiding: instance.properties.motivation
-                    handelingBehandelaar: instance.properties.supervisor
                     opschortingEnAanhoudingMogelijk: instance.properties.suspension|bool
                 mappingOut: {}
                 translationsIn: ["caseTypeTable1"]
@@ -174,36 +171,10 @@ App\Entity\Action:
                     handelingInitiator: indienen
                     beginGeldigheid: "1970-01-01"
                     versieDatum: "1970-01-01"
-
-    SyncResultaatTypeAction:
-        name: SyncResultaatTypeAction
-        description: This is a synchronization action from the xxllnc v2 to the gateway zgw ztc resultaattypen. 
-        listens:
-            - 'commongateway.cronjob.trigger'
-        throws: []
-        conditions:
-            '==': [1, 1]
-        class: App\ActionHandler\SynchronizationCollectionHandler
-        priority: 0
-        async: false
-        configuration:
-            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # ztc ResultaatType entity id
-            source: 97b05576-af9b-43df-bab7-dbf0f057258e # zaaksysteemv1 gateway id
-            location: /casetype
-            apiSource:
-                sourcePaginated: true
-                location:
-                    objects: 'result.instance.rows'
-                    idField: 'reference'
-                queryMethod: page
-                syncFromList: true
-                sourceLeading: true
-                useDataFromCollection: false
-                mappingIn: {}
-                mappingOut: {}
-                translationsIn: {}
-                translationsOut: {}
-                skeletonIn: {}
+                    doel: Overzicht hebben van de bezoekers die aanwezig zijn
+                    versiedatum: "1970-01-01"
+                    handelingBehandelaar: Hoofd beveiliging
+                    aanleiding: Er is een afspraak gemaakt met een (niet) natuurlijk persoon
 
         
     SyncZakenCollectionAction:
@@ -284,4 +255,9 @@ App\Entity\Translation:
         translationTable: caseTypeTable1
         translateFrom: Ja
         translateTo: true
+        language: en
+    internexternTranslation:
+        translationTable: caseTypeTable1
+        translateFrom: internextern
+        translateTo: intern
         language: en
