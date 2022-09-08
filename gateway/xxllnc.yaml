@@ -164,6 +164,11 @@ App\Entity\Action:
                     verantwoordingsrelatie: instance.properties.supervisor_relation|array
                     omschrijving: instance.title
                     opschortingEnAanhoudingMogelijk: instance.properties.suspension|bool
+                    resultaattypen.omschrijving: instance.results.comments
+                    resultaattypen.omschrijvingGeneriek: instance.results.label
+                    resultaattypen.resultaattypeomschrijving: instance.results.type
+                    resultaattypen.selectielijstklasse: instance.results.selection_list
+                    resultaattypen.archiefactietermijn: instance.results.period_of_preservation
                 mappingOut: {}
                 translationsIn: ["caseTypeTable1"]
                 translationsOut: {}
@@ -250,14 +255,24 @@ App\Entity\Translation:
         translationTable: caseTypeTable1
         translateFrom: Nee
         translateTo: false
-        language: en
+        language: nl
     jaToTrueTranslation:
         translationTable: caseTypeTable1
         translateFrom: Ja
         translateTo: true
-        language: en
+        language: nl
     internexternTranslation:
         translationTable: caseTypeTable1
         translateFrom: internextern
         translateTo: intern
-        language: en
+        language: nl
+    vernietigenVTranslation:
+        translationTable: caseTypeTable1
+        translateFrom: Vernietigen (V)
+        translateTo: vernietigen
+        language: nl
+    bewarenBTranslation:
+        translationTable: caseTypeTable1
+        translateFrom: Bewaren (B)
+        translateTo: blijvend_bewaren
+        language: nl
