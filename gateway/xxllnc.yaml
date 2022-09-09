@@ -54,6 +54,16 @@ App\Entity\CollectionEntity:
       testDataLocation: https://raw.githubusercontent.com/CommonGateway/DocumentenAPI/main/data/drc.yaml
       prefix: drc
 
+
+    overigeObjectenCollection:
+      autoLoad: true
+      loadTestData: true
+      locationOAS: https://raw.githubusercontent.com/Huwelijksplanner/OverigeObjecten/main/OAS.yaml
+      name: Overige objecten
+      sourceType: GitHub
+      # testDataLocation: https://raw.githubusercontent.com/Huwelijksplanner/OverigeObjecten/main/data/drc.yaml
+      source: "@zaaksysteemv1"
+
 # Entities
 App\Entity\Entity:
     # Notification Entity
