@@ -137,6 +137,22 @@ App\Entity\Action:
         async: false
         configuration: {}
 
+    MapZaakTypeAction:
+        name: MapZaakTypeAction
+        description: This is a action to map xxllnc casetype to zgw casetype. 
+        listens:
+            - 'commongateway.object.create'
+            - 'commongateway.object.update'
+        throws: []
+        conditions:
+            '==':
+                - var: entity
+                - 97b05576-af9b-43df-bab7-dbf0f057258e # zaak entity uuid
+        class: App\ActionHandler\MapZaakTypeHandler
+        priority: 0
+        async: false
+        configuration: {}
+
     SyncZaakTypeAction:
         name: SyncZaakTypeAction
         description: This is a synchronization action from the xxllnc v2 to the gateway zgw ztc zaaktypen. 
@@ -161,35 +177,36 @@ App\Entity\Action:
                 syncFromList: true
                 sourceLeading: true
                 useDataFromCollection: false
-                mappingIn: 
-                    identificatie: instance.legacy.zaaktype_id|string
-                    onderwerp: instance.title
-                    indicatieInternOfExtern: instance.trigger
-                    doorlooptijd: instance.properties.lead_time_legal.weken
-                    servicenorm: instance.properties.lead_time_service.weken
-                    vertrouwelijkheidaanduiding: instance.properties.designation_of_confidnetiality
-                    verlengingMogelijk: instance.properties.extension'
-                    trefwoorden: instance.subject_types
-                    publicatieIndicatie: instance.properties.publication|bool
-                    verantwoordingsrelatie: instance.properties.supervisor_relation|array
-                    omschrijving: instance.title
-                    opschortingEnAanhoudingMogelijk: instance.properties.suspension|bool
-                    resultaattypen.omschrijving: instance.results.comments
-                    resultaattypen.omschrijvingGeneriek: instance.results.label
-                    resultaattypen.resultaattypeomschrijving: instance.results.type
-                    resultaattypen.selectielijstklasse: instance.results.selection_list
-                    resultaattypen.archiefactietermijn: instance.results.period_of_preservation
+                # mappingIn: 
+                #     identificatie: instance.legacy.zaaktype_id|string
+                #     onderwerp: instance.title
+                #     indicatieInternOfExtern: instance.trigger
+                #     doorlooptijd: instance.properties.lead_time_legal.weken
+                #     servicenorm: instance.properties.lead_time_service.weken
+                #     vertrouwelijkheidaanduiding: instance.properties.designation_of_confidnetiality
+                #     verlengingMogelijk: instance.properties.extension'
+                #     trefwoorden: instance.subject_types
+                #     publicatieIndicatie: instance.properties.publication|bool
+                #     verantwoordingsrelatie: instance.properties.supervisor_relation|array
+                #     omschrijving: instance.title
+                #     opschortingEnAanhoudingMogelijk: instance.properties.suspension|bool
+                #     resultaattypen.omschrijving: instance.results.comments
+                #     resultaattypen.omschrijvingGeneriek: instance.results.label
+                #     resultaattypen.resultaattypeomschrijving: instance.results.type
+                #     resultaattypen.selectielijstklasse: instance.results.selection_list
+                #     resultaattypen.archiefactietermijn: instance.results.period_of_preservation
                 mappingOut: {}
-                translationsIn: ["caseTypeTable1"]
+                # translationsIn: ["caseTypeTable1"]
+                translationsIn: {}
                 translationsOut: {}
-                skeletonIn: 
-                    handelingInitiator: indienen
-                    beginGeldigheid: "1970-01-01"
-                    versieDatum: "1970-01-01"
-                    doel: Overzicht hebben van de bezoekers die aanwezig zijn
-                    versiedatum: "1970-01-01"
-                    handelingBehandelaar: Hoofd beveiliging
-                    aanleiding: Er is een afspraak gemaakt met een (niet) natuurlijk persoon
+                # skeletonIn: 
+                #     handelingInitiator: indienen
+                #     beginGeldigheid: "1970-01-01"
+                #     versieDatum: "1970-01-01"
+                #     doel: Overzicht hebben van de bezoekers die aanwezig zijn
+                #     versiedatum: "1970-01-01"
+                #     handelingBehandelaar: Hoofd beveiliging
+                #     aanleiding: Er is een afspraak gemaakt met een (niet) natuurlijk persoon
 
         
     SyncZakenCollectionAction:
