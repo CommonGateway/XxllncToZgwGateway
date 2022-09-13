@@ -151,7 +151,11 @@ App\Entity\Action:
         class: App\ActionHandler\MapZaakTypeHandler
         priority: 0
         async: false
-        configuration: {}
+        configuration:
+            entities:
+                ZaakType: 97b05576-af9b-43df-bab7-dbf0f057258e
+                StatusType: 97b05576-af9b-43df-bab7-dbf0f057258e
+                ResultaatType: 97b05576-af9b-43df-bab7-dbf0f057258e
 
     SyncZaakTypeAction:
         name: SyncZaakTypeAction
