@@ -121,21 +121,21 @@ App\Entity\Gateway:
 
 # Actions
 App\Entity\Action:
-    ZGWZaakAction:
-        name: ZGWZaakAction
-        description: This is a action to check if a case is in order with its case type. 
-        listens:
-            - 'commongateway.object.create'
-            - 'commongateway.object.update'
-        throws: []
-        conditions:
-            '==':
-                - var: entity
-                - 97b05576-af9b-43df-bab7-dbf0f057258e # zaak entity uuid
-        class: App\ActionHandler\ZgwZaakHandler
-        priority: 0
-        async: false
-        configuration: {}
+    # ZGWZaakAction:
+    #     name: ZGWZaakAction
+    #     description: This is a action to check if a case is in order with its case type. 
+    #     listens:
+    #         - 'commongateway.object.create'
+    #         - 'commongateway.object.update'
+    #     throws: []
+    #     conditions:
+    #         '==':
+    #             - var: entity
+    #             - 97b05576-af9b-43df-bab7-dbf0f057258e # zaak entity uuid
+    #     class: App\ActionHandler\ZgwZaakHandler
+  #     priority: 0
+  #     async: false
+    #     configuration: {}
 
     MapZaakTypeAction:
         name: MapZaakTypeAction
@@ -154,8 +154,6 @@ App\Entity\Action:
         configuration:
             entities:
                 ZaakType: 97b05576-af9b-43df-bab7-dbf0f057258e
-                StatusType: 97b05576-af9b-43df-bab7-dbf0f057258e
-                ResultaatType: 97b05576-af9b-43df-bab7-dbf0f057258e
 
     SyncZaakTypeAction:
         name: SyncZaakTypeAction
@@ -188,73 +186,79 @@ App\Entity\Action:
                 skeletonIn: {}
 
         
-    SyncZakenCollectionAction:
-        name: SyncZakenCollectionAction
-        description: This is a synchronization action from the xxllnc v2 to the gateway zrc zaken. 
-        listens:
-            - 'commongateway.cronjob.trigger'
-        throws: []
-        conditions:
-            '==': [1, 1]
-        class: App\ActionHandler\SynchronizationCollectionHandler
-        priority: 0
-        async: false
-        configuration:
-            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
-            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @xxllncv2
-            location: /cm/case/search
-            apiSource:
-                location:
-                    objects: 'data'
-                    object: 'attributes'
-                    idField: 'id'
-                queryMethod: page
-                syncFromList: true
-                sourceLeading: true
-                useDataFromCollection: false
-                mappingIn: {}
-                mappingOut: {}
-                translationsIn: {}
-                translationsOut: {}
-                skeletonIn: {}
+    # SyncZakenCollectionAction:
+        # name: SyncZakenCollectionAction
+        # description: This is a synchronization action from the xxllnc v2 to the gateway zrc zaken. 
+        # listens:
+        #     - 'commongateway.cronjob.trigger'
+        # throws: []
+        # conditions:
+        #     '==': [1, 1]
+        # class: App\ActionHandler\SynchronizationCollectionHandler
+        # priority: 0
+        # async: false
+        # configuration:
+        #     entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
+        #     source: 97b05576-af9b-43df-bab7-dbf0f057258e # @xxllncv2
+        #     location: /cm/case/search
+        #     apiSource:
+        #         location:
+        #             objects: 'data'
+        #             idField: 'id'
+        #         queryMethod: page
+        #         syncFromList: true
+        #         sourceLeading: true
+        #         useDataFromCollection: false
+        #         mappingIn: 
+        #             registratiedatum: attributes.registration_date
+        #             identificatie: id
+        #             omschrijving: attributes.subject
+        #             status.statustype: attributes.status
+        #             status.datumStatusGezet: attributes.registration_date 
+        #             einddatum: attributes.completion_date
+        #             archiefstatus: attributes.archival_state
+        #         mappingOut: {}
+        #         translationsIn: {}
+        #         translationsOut: {}
+        #         skeletonIn: {}
     
-    SyncZaakWebhookAction:
-        name: SyncZaakWebhookAction
-        description: This is a synchronization action from the xxllnc v2 to a gateway zrc zaak with a webhook.
-        listens:
-            - 'commongateway.object.create'
-        throws: []
-        conditions:
-            '==':
-                - var: entity
-                - 97b05576-af9b-43df-bab7-dbf0f057258e # notificatie entity uuid
-        class: App\ActionHandler\SynchronizationWebhookHandler
-        priority: 0
-        async: false
-        configuration:
-            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
-            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @xxllncv2
-            location: /cm/case/get_case
-            queryParams:
-                syncSourceId: case_uuid
-            apiSource:
-                location:
-                    object: 'data'
-                    idField: 'data.id'
-                    dateChangedField: last_modified_date
-                results: 0
-                queryMethod: page
-                syncFromList: true
-                sourceLeading: true
-                mappingIn:
-                    bronorganisatie: attributes.number|string
-                    zaaktype: relationships.case_type.links.self
-                    verantwoordelijkeOrganisatie: attributes.number|string
-                    startdatum: attributes.start_date
-                mappingOut: {}
-                translationsIn: {}
-                translationsOut: {}
-                skeletonIn: {}
+    # SyncZaakWebhookAction:
+    #     name: SyncZaakWebhookAction
+    #     description: This is a synchronization action from the xxllnc v2 to a gateway zrc zaak with a webhook.
+    #     listens:
+    #         - 'commongateway.object.create'
+    #     throws: []
+    #     conditions:
+    #         '==':
+    #             - var: entity
+    #             - 97b05576-af9b-43df-bab7-dbf0f057258e # notificatie entity uuid
+    #     class: App\ActionHandler\SynchronizationWebhookHandler
+    #     priority: 0
+    #     async: false
+    #     configuration:
+    #         entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
+    #         source: 97b05576-af9b-43df-bab7-dbf0f057258e # @xxllncv2
+    #         location: /cm/case/get_case
+    #         queryParams:
+    #             syncSourceId: case_uuid
+    #         apiSource:
+    #             location:
+    #                 object: 'data'
+    #                 idField: 'data.id'
+    #                 dateChangedField: last_modified_date
+    #             results: 0
+    #             queryMethod: page
+    #             syncFromList: true
+    #             sourceLeading: true
+    #             mappingIn:
+    #                 bronorganisatie: attributes.number|string
+    #                 zaaktype: relationships.case_type.links.self
+    #                 verantwoordelijkeOrganisatie: attributes.number|string
+    #                 startdatum: attributes.start_date
+    #             mappingOut: {}
+    #             translationsIn: {}
+    #             translationsOut: {}
+    #             skeletonIn: {}
 
 App\Entity\Translation:
     neeToFalseTranslation:
