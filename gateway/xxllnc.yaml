@@ -7,7 +7,7 @@ App\Entity\CollectionEntity:
       locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakRegistratieComponentAPI/main/OAS.yaml
       name: ZaakRegistratieComponent
       sourceType: GitHub
-      testDataLocation: https://raw.githubusercontent.com/CommonGateway/ZaakRegistratieComponentAPI/main/data/zrc.json
+      #   testDataLocation: https://raw.githubusercontent.com/CommonGateway/ZaakRegistratieComponentAPI/main/data/zrc.json
       prefix: zrc
 
     zaakTypeCatalogusCollection:
@@ -16,7 +16,7 @@ App\Entity\CollectionEntity:
       locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakTypeCatalogusAPI/main/OAS.yaml
       name: ZaakTypeCatalogus
       sourceType: GitHub
-      testDataLocation: https://raw.githubusercontent.com/CommonGateway/ZaakTypeCatalogusAPI/main/data/ztc.json
+      #   testDataLocation: https://raw.githubusercontent.com/CommonGateway/ZaakTypeCatalogusAPI/main/data/ztc.json
       prefix: ztc
       source: "@zaaksysteemv1"
 
@@ -137,6 +137,35 @@ App\Entity\Action:
   #     async: false
     #     configuration: {}
 
+    SyncZaakTypeAction:
+        name: SyncZaakTypeAction
+        description: This is a synchronization action from the xxllnc v2 to the gateway zgw ztc zaaktypen. 
+        listens:
+            - 'commongateway.cronjob.trigger'
+        throws: []
+        conditions:
+            '==': [1, 1]
+        class: App\ActionHandler\SynchronizationCollectionHandler
+        priority: 0
+        async: false
+        configuration:
+            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # ztc ZaakType entity id
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # zaaksysteemv1 gateway id
+            location: /casetype
+            apiSource:
+                location:
+                    objects: 'result.instance.rows'
+                    idField: 'reference'
+                queryMethod: page
+                syncFromList: true
+                sourceLeading: true
+                useDataFromCollection: false
+                mappingIn: {}
+                mappingOut: {}
+                translationsIn: {}
+                translationsOut: {}
+                skeletonIn: {}
+
     MapZaakTypeAction:
         name: MapZaakTypeAction
         description: This is a action to map xxllnc casetype to zgw casetype. 
@@ -155,9 +184,9 @@ App\Entity\Action:
             entities:
                 ZaakType: 97b05576-af9b-43df-bab7-dbf0f057258e
 
-    SyncZaakTypeAction:
-        name: SyncZaakTypeAction
-        description: This is a synchronization action from the xxllnc v2 to the gateway zgw ztc zaaktypen. 
+    SyncZakenCollectionAction:
+        name: SyncZakenCollectionAction
+        description: This is a synchronization action from the xxllnc v2 to the gateway zrc zaken. 
         listens:
             - 'commongateway.cronjob.trigger'
         throws: []
@@ -167,11 +196,10 @@ App\Entity\Action:
         priority: 0
         async: false
         configuration:
-            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # ztc ZaakType entity id
-            source: 97b05576-af9b-43df-bab7-dbf0f057258e # zaaksysteemv1 gateway id
-            location: /casetype
+            entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @zaaksysteemv1
+            location: /case
             apiSource:
-                sourcePaginated: true
                 location:
                     objects: 'result.instance.rows'
                     idField: 'reference'
@@ -185,42 +213,26 @@ App\Entity\Action:
                 translationsOut: {}
                 skeletonIn: {}
 
-        
-    # SyncZakenCollectionAction:
-        # name: SyncZakenCollectionAction
-        # description: This is a synchronization action from the xxllnc v2 to the gateway zrc zaken. 
-        # listens:
-        #     - 'commongateway.cronjob.trigger'
-        # throws: []
-        # conditions:
-        #     '==': [1, 1]
-        # class: App\ActionHandler\SynchronizationCollectionHandler
-        # priority: 0
-        # async: false
-        # configuration:
-        #     entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
-        #     source: 97b05576-af9b-43df-bab7-dbf0f057258e # @xxllncv2
-        #     location: /cm/case/search
-        #     apiSource:
-        #         location:
-        #             objects: 'data'
-        #             idField: 'id'
-        #         queryMethod: page
-        #         syncFromList: true
-        #         sourceLeading: true
-        #         useDataFromCollection: false
-        #         mappingIn: 
-        #             registratiedatum: attributes.registration_date
-        #             identificatie: id
-        #             omschrijving: attributes.subject
-        #             status.statustype: attributes.status
-        #             status.datumStatusGezet: attributes.registration_date 
-        #             einddatum: attributes.completion_date
-        #             archiefstatus: attributes.archival_state
-        #         mappingOut: {}
-        #         translationsIn: {}
-        #         translationsOut: {}
-        #         skeletonIn: {}
+    MapZaakAction:
+        name: MapZaakAction
+        description: This is a action to map xxllnc case to zgw zaak. 
+        listens:
+            - 'commongateway.object.create'
+            - 'commongateway.object.update'
+        throws: []
+        conditions:
+            '==':
+                - var: entity
+                - 97b05576-af9b-43df-bab7-dbf0f057258e # zaak entity uuid
+        class: App\ActionHandler\MapZaakHandler
+        priority: 0
+        async: false
+        configuration:
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @zaaksysteemv1
+            entities:
+                Zaak: 97b05576-af9b-43df-bab7-dbf0f057258e
+                ZaakType: 97b05576-af9b-43df-bab7-dbf0f057258e
+                XxllncZaakType: 97b05576-af9b-43df-bab7-dbf0f057258e
     
     # SyncZaakWebhookAction:
     #     name: SyncZaakWebhookAction
