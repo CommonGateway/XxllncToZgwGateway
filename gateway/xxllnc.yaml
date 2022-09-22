@@ -58,7 +58,7 @@ App\Entity\CollectionEntity:
     overigeObjectenCollection:
       autoLoad: true
       loadTestData: true
-      locationOAS: https://raw.githubusercontent.com/Huwelijksplanner/OverigeObjecten/main/OAS.yaml
+      locationOAS: https://raw.githubusercontent.com/CommonGateway/XxllncOverigeObjecten/main/OAS.yaml
       name: Overige objecten
       sourceType: GitHub
       # testDataLocation: https://raw.githubusercontent.com/Huwelijksplanner/OverigeObjecten/main/data/drc.yaml
@@ -115,9 +115,9 @@ App\Entity\Gateway:
         auth: apikey
         apikey: XXX # DONT COMMIT
         location: https://development.zaaksysteem.nl/api/v1
-        authorizationHeader: API-Key
+        authorizationHeader: API-KEY
         headers:
-            Api-Interface-Id: XXXX # DONT COMMIT
+            API-Interface-ID: XXXX # DONT COMMIT
 
 # Actions
 App\Entity\Action:
