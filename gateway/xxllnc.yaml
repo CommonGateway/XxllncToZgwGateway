@@ -1,4 +1,3 @@
-
 # Collections
 App\Entity\CollectionEntity:
     zaakRegistratieComponentCollection:
@@ -233,6 +232,51 @@ App\Entity\Action:
                 Zaak: 97b05576-af9b-43df-bab7-dbf0f057258e
                 ZaakType: 97b05576-af9b-43df-bab7-dbf0f057258e
                 XxllncZaakType: 97b05576-af9b-43df-bab7-dbf0f057258e
+
+    ZgwToXxllncAction:
+        name: ZgwToXxllncAction
+        description: This is a mapping action from gateway zrc zaken to xxllnc v1. 
+        listens:
+            - 'commongateway.object.create'
+        throws: []
+        conditions:
+            "==":
+              - var: entity
+              - "zaakEntityId"
+        class: App\ActionHandler\ZgwToXxllncHandler
+        priority: 0
+        async: false
+        configuration:
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @zaaksysteemv1
+            location: /case
+
+    SyncZgwToXxllncAction:
+        name: SyncZgwToXxllncAction
+        description: This is a synchronization action from gateway zrc zaken to xxllnc v1. 
+        listens:
+            - 'commongateway.object.create'
+        throws: []
+        conditions:
+            "==":
+              - var: entity
+              - "xxllncZaakPostEntityId"
+        class: App\ActionHandler\SynchronizationPushHandler
+        priority: 0
+        async: false
+        configuration:
+            source: 97b05576-af9b-43df-bab7-dbf0f057258e # @zaaksysteemv1
+            location: /case/create
+            apiSource:
+                location: 
+                    idField: dossier.dossierId
+                extend: { }
+                mappingIn: { }
+                mappingOut: { }
+                translationsIn: { }
+                translationsOut: { }
+                skeletonIn: { }
+                skeletonOut: { }
+                unavailablePropertiesOut: { }
     
     # SyncZaakWebhookAction:
     #     name: SyncZaakWebhookAction
