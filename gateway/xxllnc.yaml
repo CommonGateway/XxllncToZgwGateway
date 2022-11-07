@@ -2,7 +2,7 @@
 App\Entity\CollectionEntity:
     zaakRegistratieComponentCollection:
       autoLoad: true
-      loadTestData: true
+      loadTestData: false
       locationOAS: https://raw.githubusercontent.com/CommonGateway/ZaakRegistratieComponentAPI/main/OAS.yaml
       name: ZaakRegistratieComponent
       sourceType: GitHub
@@ -112,8 +112,8 @@ App\Entity\Gateway:
     zaaksysteemv1:
         name: zaaksysteem
         auth: apikey
-        apikey: XXX # DONT COMMIT
-        location: https://development.zaaksysteem.nl/api/v1
+        apikey: XXXX # DONT COMMIT
+        location: XXXX
         authorizationHeader: API-KEY
         headers:
             API-Interface-ID: XXXX # DONT COMMIT
@@ -131,7 +131,7 @@ App\Entity\Action:
     #         '==':
     #             - var: entity
     #             - 97b05576-af9b-43df-bab7-dbf0f057258e # zaak entity uuid
-    #     class: App\ActionHandler\ZgwZaakHandler
+    #     class: CommonGateway\XxllncZGWBundle\ActionHandler\ZgwZaakHandler
   #     priority: 0
   #     async: false
     #     configuration: {}
@@ -176,7 +176,7 @@ App\Entity\Action:
             '==':
                 - var: entity
                 - 97b05576-af9b-43df-bab7-dbf0f057258e # zaak entity uuid
-        class: App\ActionHandler\MapZaakTypeHandler
+        class: CommonGateway\XxllncZGWBundle\ActionHandler\MapZaakTypeHandler
         priority: 0
         async: false
         configuration:
@@ -223,7 +223,7 @@ App\Entity\Action:
             '==':
                 - var: entity
                 - 97b05576-af9b-43df-bab7-dbf0f057258e # zaak entity uuid
-        class: App\ActionHandler\MapZaakHandler
+        class: CommonGateway\XxllncZGWBundle\ActionHandler\MapZaakHandler
         priority: 0
         async: false
         configuration:
@@ -243,7 +243,7 @@ App\Entity\Action:
             "==":
               - var: entity
               - "zaakEntityId"
-        class: App\ActionHandler\ZgwToXxllncHandler
+        class: CommonGateway\XxllncZGWBundle\ActionHandler\ZgwToXxllncHandler
         priority: 0
         async: false
         configuration:
@@ -276,7 +276,7 @@ App\Entity\Action:
                 translationsOut: { }
                 skeletonIn: { }
                 skeletonOut: { }
-                unavailablePropertiesOut: { }
+                unavailablePropertiesOut: ["id","open","route","contact_details","number"]
     
     # SyncZaakWebhookAction:
     #     name: SyncZaakWebhookAction
