@@ -113,7 +113,7 @@ App\Entity\Gateway:
         name: zaaksysteem
         auth: apikey
         apikey: XXXX # DONT COMMIT
-        location: XXXX
+        location: https://development.zaaksysteem.nl/api/v1
         authorizationHeader: API-KEY
         headers:
             API-Interface-ID: XXXX # DONT COMMIT
@@ -147,6 +147,7 @@ App\Entity\Action:
         class: App\ActionHandler\SynchronizationCollectionHandler
         priority: 0
         async: false
+        isActive: true
         configuration:
             entity: 97b05576-af9b-43df-bab7-dbf0f057258e # ztc ZaakType entity id
             source: 97b05576-af9b-43df-bab7-dbf0f057258e # zaaksysteemv1 gateway id
@@ -179,6 +180,7 @@ App\Entity\Action:
         class: CommonGateway\XxllncZGWBundle\ActionHandler\MapZaakTypeHandler
         priority: 0
         async: false
+        isActive: true
         configuration:
             entities:
                 ZaakType: 97b05576-af9b-43df-bab7-dbf0f057258e
@@ -194,6 +196,7 @@ App\Entity\Action:
         class: App\ActionHandler\SynchronizationCollectionHandler
         priority: 0
         async: false
+        isActive: true
         configuration:
             entity: 97b05576-af9b-43df-bab7-dbf0f057258e # zrc Zaak entity
             source: 97b05576-af9b-43df-bab7-dbf0f057258e # @zaaksysteemv1
@@ -226,6 +229,7 @@ App\Entity\Action:
         class: CommonGateway\XxllncZGWBundle\ActionHandler\MapZaakHandler
         priority: 0
         async: false
+        isActive: true
         configuration:
             source: 97b05576-af9b-43df-bab7-dbf0f057258e # @zaaksysteemv1
             entities:
@@ -246,6 +250,7 @@ App\Entity\Action:
         class: CommonGateway\XxllncZGWBundle\ActionHandler\ZgwToXxllncHandler
         priority: 0
         async: false
+        isActive: true
         configuration:
             source: 97b05576-af9b-43df-bab7-dbf0f057258e # @zaaksysteemv1
             location: /case
@@ -263,6 +268,7 @@ App\Entity\Action:
         class: App\ActionHandler\SynchronizationPushHandler
         priority: 0
         async: false
+        isActive: true
         configuration:
             source: 97b05576-af9b-43df-bab7-dbf0f057258e # @zaaksysteemv1
             location: /case/create
